@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const cookieParser = require('cookie-parser');
 const app = express();  
+var md5 = require('md5');
   
 app.use(bodyParser.urlencoded({ extended:  false  }));  
 app.use(bodyParser.json()); 
@@ -44,11 +45,16 @@ app.get('/userinfo',function (req,res) {
 
     //console.log(req.query.youtube_addr)
     const urlsplited = req.query.youtube_addr.split('/');
-    userInfo[req.query.uname] = urlsplited[urlsplited.length-1];
+
+    const md5usernad = md5(req.query.uname)
+    
+    //const md5usernad = req.query.uname
+    
+    userInfo[md5usernad] = urlsplited[urlsplited.length-1];
     
     console.log(userInfo);
 
-    res.cookie('uname', req.query.uname,{
+    res.cookie('uname',md5usernad,{
         maxAge:1000000
      });
    
